@@ -22,14 +22,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             JualanTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "basic_info") {
                         composable(route = "basic_info") {
                             BasicInfoScreen(
-                                onNavigateToContact = { navController.navigate(route = "form_screen") }
+                                    onNavigateToContact = {
+                                        navController.navigate(route = "form_screen")
+                                    }
                             )
                         }
                         composable(route = "form_screen") {

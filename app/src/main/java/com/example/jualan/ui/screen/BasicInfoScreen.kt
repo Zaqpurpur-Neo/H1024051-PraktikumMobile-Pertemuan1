@@ -2,6 +2,9 @@ package com.example.jualan.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,7 +16,26 @@ import com.example.jualan.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicInfoScreen(onNavigateToContact: () -> Unit) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("UMKM") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Back Icon"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -21,7 +43,6 @@ fun BasicInfoScreen(onNavigateToContact: () -> Unit) {
                 .padding(all = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Icon aplikasi menggantikan Box lingkaran + Text "Jualan" dari Pertemuan 1
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "Logo Aplikasi",
