@@ -60,6 +60,12 @@ fun BasicInfoScreen(onNavigateToContact: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
+                text = "Halo",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+
+            Text(
                 text = "Aplikasi Jualan adalah platform yang mewadahi produk lokal UMKM di wilayah Kabupaten Purbalingga, Jawa Tengah.",
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(horizontal = 16.dp)

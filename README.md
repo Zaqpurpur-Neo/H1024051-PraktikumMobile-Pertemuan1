@@ -33,3 +33,18 @@ Pertemuan kedua menekankan pada implementasi fitur interaktif dalam aplikasi mob
 
 **Kesimpulan Praktikum:**  
 Pertemuan ketiga membuka wawasan tentang pengembangan aplikasi mobile yang lebih kompleks. Mahasiswa belajar bagaimana mengintegrasikan berbagai komponen dan fitur untuk menciptakan aplikasi yang lebih lengkap dan bermanfaat.
+
+---
+
+## 📝 Tugas Pertemuan 4
+**Tanggal**: Selasa, 15 September 2026
+
+![Tugas Pertemuan 4](dokss/4-1.jpg)
+![Tugas Pertemuan 4](dokss/4-2.jpg)
+![Tugas Pertemuan 4](dokss/4-3.jpg)
+![Tugas Pertemuan 4](dokss/4-4.jpg)
+![Tugas Pertemuan 4](dokss/4-5.jpg)
+![Tugas Pertemuan 4](dokss/4-6.jpg)
+
+**Kesimpulan Praktikum:**  
+Berfokus pada penerapan State, Recomposition, dan State Hoisting pada Jetpack Compose. Mahasiswa belajar mengelola alur data dan validasi pada formulir interaktif, serta menjalankan proses asinkronus (Coroutine) untuk membuat antarmuka aplikasi yang responsif.
