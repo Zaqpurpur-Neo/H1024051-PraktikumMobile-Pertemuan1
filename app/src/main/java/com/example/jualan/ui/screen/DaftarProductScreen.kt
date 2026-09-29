@@ -39,6 +39,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -47,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -60,6 +62,9 @@ import com.example.jualan.data.dummy.DummyData
 import com.example.jualan.data.model.Category
 import com.example.jualan.data.model.Product
 import com.example.jualan.theme.JualanTheme
+import com.example.jualan.ui.viewmodel.ProductUiState
+import com.example.jualan.ui.viewmodel.ProductViewModel
+import com.example.jualan.util.JualanConstants.BASE_URL
 import kotlinx.coroutines.delay
 
 @Composable
@@ -70,16 +75,21 @@ fun ProductItemCard(product: Product, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            val imageRes = if (product.img == "dummy_product") R.drawable.normies else R.drawable.normies
+            val imageModel = if (product.img == "dummy_product") {
+                R.drawable.normies
+            } else {
+                "$BASE_URL/img/${product.img}"
+            }
 
             Box(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = imageRes),
+                coil.compose.AsyncImage(
+                    model = imageModel,
                     contentDescription = product.name,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .aspectRatio(1f)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(androidx.compose.ui.graphics.Color.White),
+                        .background(Color.White),
                     contentScale = ContentScale.Fit
                 )
 
@@ -273,46 +283,65 @@ fun StatelessDaftarProduct(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DaftarProductScreen(navController: NavController? = null) {
+fun DaftarProductScreen(navController: NavController? = null, viewModel: ProductViewModel) {
     val context = LocalContext.current
-    var selectedCategoryId by rememberSaveable { mutableStateOf(value = DummyData.categories.firstOrNull()?.id) }
+    var selectedCategoryId by rememberSaveable { mutableStateOf<Int?>(null) }
+    val uiState by viewModel.uiState.collectAsState()
+
     var searchQuery by rememberSaveable { mutableStateOf(value = "") }
     var isLoading by remember { mutableStateOf(value = false) }
     var filteredProducts by remember { mutableStateOf(value = emptyList<Product>()) }
 
-    LaunchedEffect(key1 = selectedCategoryId, key2 = searchQuery) {
-        isLoading = true
-
-        delay(timeMillis = 1000)
-
-        val filteredByCategory = if (selectedCategoryId != null) {
-            DummyData.products.filter { it.category_id == selectedCategoryId }
-        } else DummyData.products
-
-        filteredProducts = if (searchQuery.isBlank()) {
-            filteredByCategory
-        } else {
-            filteredByCategory.filter { it.name.contains(other = searchQuery, ignoreCase = true) }
+    when (val state = uiState) {
+        is ProductUiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        is ProductUiState.Error -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Error: ${state.message}", color = MaterialTheme.colorScheme.error)
+            }
         }
 
-        isLoading = false
+        is ProductUiState.Success -> {
+            if (selectedCategoryId == null && state.categories.isNotEmpty()) {
+                selectedCategoryId = state.categories.first().id
+            }
+
+            val filteredByCategory = if (selectedCategoryId != null) {
+                state.products.filter { it.category_id == selectedCategoryId }
+            } else {
+                state.products
+            }
+
+            val filteredProducts = if (searchQuery.isBlank()) {
+                filteredByCategory
+            } else {
+                filteredByCategory.filter {
+                    it.name.contains(searchQuery, ignoreCase = true)
+                }
+            }
+
+            StatelessDaftarProduct(
+                categories = state.categories,
+                selectedCategoryId = selectedCategoryId,
+                onCategorySelected = { selectedCategoryId = it },
+                searchQuery = searchQuery,
+                onSearchQueryChange = { searchQuery = it },
+                isLoading = isLoading,
+                products = filteredProducts,
+                onProductClick = { product ->
+                    navController?.navigate(route = "detail/${product.id}")
+                },
+                onContactUsClick = {
+                    navController?.navigate(route = "hubungi_kami")
+                }
+            )
+        }
     }
 
-    StatelessDaftarProduct(
-        categories = DummyData.categories,
-        selectedCategoryId = selectedCategoryId,
-        onCategorySelected = { selectedCategoryId = it },
-        searchQuery = searchQuery,
-        onSearchQueryChange = { searchQuery = it },
-        isLoading = isLoading,
-        products = filteredProducts,
-        onProductClick = { product ->
-            navController?.navigate(route = "detail/${product.id}")
-        },
-        onContactUsClick = {
-            navController?.navigate(route = "hubungi_kami")
-        }
-    )
+
 
 
 }

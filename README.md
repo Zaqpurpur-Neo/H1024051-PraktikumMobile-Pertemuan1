@@ -48,3 +48,14 @@ Pertemuan ketiga membuka wawasan tentang pengembangan aplikasi mobile yang lebih
 
 **Kesimpulan Praktikum:**  
 Berfokus pada penerapan State, Recomposition, dan State Hoisting pada Jetpack Compose. Mahasiswa belajar mengelola alur data dan validasi pada formulir interaktif, serta menjalankan proses asinkronus (Coroutine) untuk membuat antarmuka aplikasi yang responsif.
+
+---
+
+## 📝 Tugas Pertemuan 4
+**Tanggal**: Selasa, 29 September 2026
+
+![Tugas Pertemuan 5](dokss/5-1.jpg)
+![Tugas Pertemuan 5](dokss/5-2.jpg)
+
+**Kesimpulan Praktikum:**
+Berfokus pada penerapan Networking dan pola arsitektur MVVM (Model-View-ViewModel) pada Jetpack Compose. Mahasiswa belajar mengonsumsi API berformat JSON menggunakan pustaka Retrofit, mengelola kondisi antarmuka pengguna (UI State) secara asinkronus menggunakan StateFlow, serta mengorganisasi struktur kode aplikasi agar lebih terstruktur dan mudah dirawat.
